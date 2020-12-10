@@ -1,12 +1,12 @@
-FROM php
+FROM php:alpine
 
-RUN apt-get update -y \
-  && apt-get install -y \
+RUN apk --no-cache add \
         libzip-dev \
         zip \
+        curl \
   && docker-php-ext-install zip
 
-RUN curl https://raw.githubusercontent.com/saucal/wp-codesniffer-installer/master/install-standards.sh | bash
+RUN curl https://raw.githubusercontent.com/saucal/wp-codesniffer-installer/master/install-standards.sh | sh
 
 ENTRYPOINT ["phpcs"]
 
