@@ -2,7 +2,7 @@
 $test = 'asd';
 
 
-$test="asd";
+$test = 'asd';
 $tesFaFtfff="dsa";
 
 
