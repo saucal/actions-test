@@ -25,27 +25,18 @@ jobs:
       # Make Symlinks
       - name: Sniff
         run: |
+          export REVIEWDOG_GITHUB_API_TOKEN="${{ secrets.GITHUB_TOKEN }}"
           PHPCS_DIFF=$(mktemp)
+          PHPCS_JSON=$(mktemp)
           GIT_DIFF=$(mktemp)
-          phpcs --report-diff="${PHPCS_DIFF}" "${GITHUB_WORKSPACE}" || PHPCS_EXIT_CODE=$?
-          patch -p0 -ui "${PHPCS_DIFF}" || PATCH_EXIT_CODE=$?
-          if [[ "${PATCH_EXIT_CODE}" -ne 0 ]]; then
-            PATCHED_FILES=$(git status -s -uno | wc -l)
-            if [[ "${PATCHED_FILES}" -ne 0 ]]; then
-              git diff > "${GIT_DIFF}"
-              git stash -u && git stash drop
 
-              export REVIEWDOG_GITHUB_API_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+          phpcs --report-checkstyle="${PHPCS_JSON}" "${GITHUB_WORKSPACE}" || PHPCS_EXIT_CODE=$?
 
-              reviewdog \
+          cat "${PHPCS_JSON}" \
+            | reviewdog -f="checkstyle" \
                 -name="${INPUT_TOOL_NAME:-reviewdog-suggester}" \
-                -f=diff \
-                -f.diff.strip=1 \
                 -reporter="github-pr-review" \
                 -filter-mode="${INPUT_FILTER_MODE:-diff_context}" \
                 -fail-on-error="${INPUT_FAIL_ON_ERROR:-true}" \
-                -level="${INPUT_LEVEL:-warning}" < "${GIT_DIFF}" || REVIEWDOG_EXIT_CODE=$?
-            fi
-          fi
-
-          exit 0
+                -level="${INPUT_LEVEL:-warning}"
+          git stash -u && git stash drop
