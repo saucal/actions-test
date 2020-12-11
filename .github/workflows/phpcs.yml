@@ -14,7 +14,7 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   build:
-    name: Run Codesniffer
+    name: PHPCS
     runs-on: ubuntu-18.04
     # The type of runner that the job will run on
     container: saucalinc/reviewdog-php
@@ -25,9 +25,6 @@ jobs:
       - uses: actions/checkout@v2
 
       # Make Symlinks
-      - name: Create Vagrant Like Environment
+      - name: Sniff
         run: |
-          # uninstall pre installed packages (to test if utilities work)
-          phpcs --version
-
-          ls -l "$GITHUB_WORKSPACE"
+          phpcs --report=diff "$GITHUB_WORKSPACE"
