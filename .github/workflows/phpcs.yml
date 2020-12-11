@@ -32,5 +32,5 @@ jobs:
           phpcs --report-diff="${PHPCS_DIFF}" "${GITHUB_WORKSPACE}" || PHPCS_EXIT_CODE=$?
           patch -p0 -ui "${PHPCS_DIFF}"
           git diff > "${GIT_DIFF}"
-          cat "${PHPCS_DIFF}"
+          cat "${GIT_DIFF}"
           
