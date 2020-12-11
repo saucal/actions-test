@@ -8,6 +8,7 @@ RUN apk --no-cache add \
         curl \
         jq \
         git \
+        patch \
   && docker-php-ext-install zip
 
 RUN curl https://raw.githubusercontent.com/saucal/wp-codesniffer-installer/master/install-standards.sh | sh
