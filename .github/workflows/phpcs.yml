@@ -29,14 +29,25 @@ jobs:
           PHPCS_DIFF=$(mktemp)
           PHPCS_JSON=$(mktemp)
           GIT_DIFF=$(mktemp)
+          phpcs --report-diff="${PHPCS_DIFF}" "${GITHUB_WORKSPACE}" || PHPCBF_EXIT_CODE=$?
+          patch -p0 -ui "${PHPCS_DIFF}" || PATCH_EXIT_CODE=$?
+          if [[ "${PATCH_EXIT_CODE}" -ne 0 ]]; then
+            PATCHED_FILES=$(git status -s -uno | wc -l)
+            if [[ "${PATCHED_FILES}" -ne 0 ]]; then
+              git diff > "${GIT_DIFF}"
 
-          phpcs --report-checkstyle="${PHPCS_JSON}" "${GITHUB_WORKSPACE}" || PHPCS_EXIT_CODE=$?
-
-          cat "${PHPCS_JSON}" \
-            | reviewdog -f="checkstyle" \
+              reviewdog \
                 -name="${INPUT_TOOL_NAME:-reviewdog-suggester}" \
+                -f=diff \
+                -f.diff.strip=1 \
                 -reporter="github-pr-review" \
                 -filter-mode="${INPUT_FILTER_MODE:-diff_context}" \
                 -fail-on-error="${INPUT_FAIL_ON_ERROR:-true}" \
-                -level="${INPUT_LEVEL:-warning}"
+                -level="${INPUT_LEVEL:-warning}" < "${GIT_DIFF}" || REVIEWDOG_EXIT_CODE=$?
+            fi
+          fi
+          phpcs --report-json="${PHPCS_JSON}" "${GITHUB_WORKSPACE}" || PHPCS_EXIT_CODE=$?
+
+          cat "${PHPCS_JSON}" \
+          | jq -r ' .files | to_entries[] | .key as $path | .value.messages[] as $msg | "{\"message\": \"`\($msg.source)`<br>\($msg.message)\", \"location\": {\"path\": \"\($path)\", \"range\": {\"start\": {\"line\": \($msg.line), \"column\": \($msg.column)}}}, \"severity\": \"ERROR\"}" '
           git stash -u && git stash drop
