@@ -27,4 +27,10 @@ jobs:
       # Make Symlinks
       - name: Sniff
         run: |
-          phpcs --report=diff "$GITHUB_WORKSPACE"
+          PHPCS_DIFF=$(mktemp)
+          GIT_DIFF=$(mktemp)
+          phpcs --report-diff="${PHPCS_DIFF}" "${GITHUB_WORKSPACE}" || PHPCS_EXIT_CODE=$?
+          patch -p0 -ui "${PHPCS_DIFF}"
+          git diff > "${GIT_DIFF}"
+          cat "${GIT_DIFF}"
+          
