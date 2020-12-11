@@ -24,5 +24,5 @@ $im_in_the_middle = 'asd';
 
 
 
-$test="asd";
-$tesFaFtfff="dsa";
+$test       = 'asd';
+$tesFaFtfff = 'dsa';
