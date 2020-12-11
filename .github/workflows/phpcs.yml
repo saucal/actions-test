@@ -41,3 +41,5 @@ jobs:
             -filter-mode="${INPUT_FILTER_MODE:-diff_context}" \
             -fail-on-error="${INPUT_FAIL_ON_ERROR:-true}" \
             -level="${INPUT_LEVEL:-warning}" < "${GIT_DIFF}" || REVIEWDOG_EXIT_CODE=$?
+
+          cat "${GIT_DIFF}"
