@@ -1,2 +1,2 @@
 <?php
-$test="asd";
+$test = 'asd';
