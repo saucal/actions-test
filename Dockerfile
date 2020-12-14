@@ -17,5 +17,6 @@ RUN curl -sfL https://raw.githubusercontent.com/reviewdog/reviewdog/master/insta
 
 COPY entrypoint.sh /entrypoint.sh
 COPY rdjson-conv.php /rdjson-conv.php
+COPY count-fixable.php /count-fixable.php
 
 ENTRYPOINT ["/entrypoint.sh"]
