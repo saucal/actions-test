@@ -35,6 +35,8 @@ jobs:
 
           pwd
 
+          git branch -a
+
           git diff master
 
           cat "${PHPCS_JSON}" \
