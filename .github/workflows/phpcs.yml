@@ -24,6 +24,7 @@ jobs:
 
       # Make Symlinks
       - name: Sniff
+        id: sniff
         run: |
           export REVIEWDOG_GITHUB_API_TOKEN="${{ secrets.GITHUB_TOKEN }}"
           PHPCS_DIFF=$(mktemp)
@@ -31,6 +32,13 @@ jobs:
           GIT_DIFF=$(mktemp)
           phpcs --report-json="${PHPCS_JSON}" "${GITHUB_WORKSPACE}" || PHPCS_EXIT_CODE=$?
 
+          echo "::set-output name=fixables::$(cat "${PHPCS_JSON}" | php -f '/count-fixable.php')"
+          echo "::set-output name=phpcs_json::${PHPCS_JSON}"
+
+      
+      - name: Run PHPCS
+        if: ${{ steps.sniff.outputs.fixables == 0 }}
+        run: |
           cat "${PHPCS_JSON}" \
           | php -f "/rdjson-conv.php" \
           | reviewdog \
@@ -39,4 +47,9 @@ jobs:
               -filter-mode="${INPUT_FILTER_MODE:-added}" \
               -fail-on-error="${INPUT_FAIL_ON_ERROR:-true}" \
               -level="${INPUT_LEVEL:-warning}" || REVIEWDOG_EXIT_CODE=$?
-          git stash -u && git stash drop
+
+      - name: Warn about fixable
+        if: ${{ steps.sniff.outputs.fixables > 0 }}
+        run: |
+          echo ${{ steps.sniff.outputs.fixables }}
+          echo ${{ steps.sniff.outputs.phpcs_json }}
