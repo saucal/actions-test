@@ -25,7 +25,6 @@ jobs:
       # Make Symlinks
       - name: Sniff
         run: |
-          cd "${GITHUB_WORKSPACE}";
           export REVIEWDOG_GITHUB_API_TOKEN="${{ secrets.GITHUB_TOKEN }}"
           PHPCS_DIFF=$(mktemp)
           PHPCS_JSON=$(mktemp)
@@ -36,8 +35,8 @@ jobs:
           | php -f "/rdjson-conv.php" \
           | reviewdog \
               -f=rdjsonl \
-              -diff="git diff master"
+              -reporter="github-pr-review" \
               -filter-mode="${INPUT_FILTER_MODE:-diff_context}" \
               -fail-on-error="${INPUT_FAIL_ON_ERROR:-true}" \
-              -level="${INPUT_LEVEL:-warning}" || REVIEWDOG_EXIT_CODE=$?
+              -level="${INPUT_LEVEL:-warning}" -tee || REVIEWDOG_EXIT_CODE=$?
           git stash -u && git stash drop
