@@ -37,16 +37,13 @@ jobs:
 
           git branch -a
 
-          git diff master
-
-          echo "${{ github.event.pull_request.head.ref }}"
-          echo "${{ github.event.pull_request.base.ref }}"
+          git diff remotes/origin/${{ github.event.pull_request.base.ref }}
 
           cat "${PHPCS_JSON}" \
           | php -f "/rdjson-conv.php" \
           | reviewdog \
               -f=rdjsonl \
-              -diff="git diff ${{ github.event.pull_request.head.ref }}" \
+              -diff="git diff remotes/origin/${{ github.event.pull_request.base.ref }}" \
               -filter-mode="${INPUT_FILTER_MODE:-added}" \
               -fail-on-error="${INPUT_FAIL_ON_ERROR:-true}" \
               -level="${INPUT_LEVEL:-warning}" -tee || REVIEWDOG_EXIT_CODE=$?
