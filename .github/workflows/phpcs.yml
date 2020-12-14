@@ -36,7 +36,7 @@ jobs:
           | reviewdog \
               -f=rdjsonl \
               -reporter="github-pr-review" \
-              -filter-mode="${INPUT_FILTER_MODE:-diff_context}" \
+              -filter-mode="${INPUT_FILTER_MODE:-added}" \
               -fail-on-error="${INPUT_FAIL_ON_ERROR:-true}" \
               -level="${INPUT_LEVEL:-warning}" || REVIEWDOG_EXIT_CODE=$?
           git stash -u && git stash drop
