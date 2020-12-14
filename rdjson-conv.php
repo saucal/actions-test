@@ -19,7 +19,8 @@ foreach ( $json['files'] as $path => $file ) {
 					),
 				),
 				'severity' => $msg['type'],
-			)
+			),
+			JSON_UNESCAPED_SLASHES
 		) . "\n";
 	}
 }
