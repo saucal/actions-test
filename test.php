@@ -7,8 +7,8 @@ $tesFaFtfff = 'dsa';
 
 
 
-if( $test == "asd" ) {
-    
+if ( $test == 'asd' ) {
+
 }
 
 
@@ -16,7 +16,7 @@ if( $test == "asd" ) {
 
 
 
-$im_in_the_middle="asd";
+$im_in_the_middle = 'asd';
 
 
 
@@ -26,5 +26,5 @@ $im_in_the_middle="asd";
 
 
 
-$test="asd";
-$tesFaFtfff="dsa";
+$test       = 'asd';
+$tesFaFtfff = 'dsa';
