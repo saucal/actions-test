@@ -35,6 +35,7 @@ jobs:
           | php -f "/rdjson-conv.php" \
           | reviewdog \
               -f=rdjsonl \
+              -diff="git diff master"
               -filter-mode="${INPUT_FILTER_MODE:-diff_context}" \
               -fail-on-error="${INPUT_FAIL_ON_ERROR:-true}" \
               -level="${INPUT_LEVEL:-warning}" || REVIEWDOG_EXIT_CODE=$?
