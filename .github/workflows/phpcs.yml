@@ -25,6 +25,7 @@ jobs:
       # Make Symlinks
       - name: Sniff
         run: |
+          cd "${GITHUB_WORKSPACE}";
           export REVIEWDOG_GITHUB_API_TOKEN="${{ secrets.GITHUB_TOKEN }}"
           PHPCS_DIFF=$(mktemp)
           PHPCS_JSON=$(mktemp)
