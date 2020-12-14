@@ -6,21 +6,20 @@ foreach ( $json['files'] as $path => $file ) {
 		if ( $msg['fixable'] ) {
 			continue;
 		}
-		echo json_encode(
-			array(
-				'message'  => '`' . $msg['source'] . '`<br>' . $msg['message'],
-				'location' => array(
-					'path'  => $path,
-					'range' => array(
-						'start' => array(
-							'line'   => $msg['line'],
-							'column' => $msg['column'],
-						),
+		$row = array(
+			'message'  => '`' . $msg['source'] . '`<br>' . $msg['message'],
+			'location' => array(
+				'path'  => $path,
+				'range' => array(
+					'start' => array(
+						'line'   => $msg['line'],
+						'column' => $msg['column'],
 					),
 				),
-				'severity' => $msg['type'],
-			)
-		) . "\n";
+			),
+			'severity' => $msg['type'],
+		);
+		echo json_encode( $row, JSON_UNESCAPED_SLASHES ) . "\n";
 	}
 }
 
