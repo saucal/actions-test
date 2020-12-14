@@ -1,5 +1,5 @@
 <?php
-$test = 'asd';
+$test = "asd";
 
 
 $test       = 'asd';
