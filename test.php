@@ -3,6 +3,6 @@ $test = 'asd';
 
 $lala = '';
 
-if ( $lala === 'lala' ) {
-
+if ( 'lala' === $lala ) {
+	echo 'something';
 }
