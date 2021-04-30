@@ -1,4 +1,4 @@
-(function($){
-	var linting =   123   
+( function ( $ ) {
+	let linting = 123;
 	linting++;
-})
+} );
