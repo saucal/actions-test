@@ -1,0 +1,23 @@
+{
+  "name": "actions-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "test.js",
+  "dependencies": {
+    "@wordpress/scripts": "^15.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saucal/actions-test.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/saucal/actions-test/issues"
+  },
+  "homepage": "https://github.com/saucal/actions-test#readme"
+}
