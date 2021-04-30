@@ -25,7 +25,7 @@ jobs:
         id: sniff
         uses: saucal/reviewdog-phpcs-action@main
         with:
-          linters: php,js
+          linters: php,js,css
 
       - name: Warn about fixables
         if: ${{ steps.sniff.outputs.fixables > 0 }}
