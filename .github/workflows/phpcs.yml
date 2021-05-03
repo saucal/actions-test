@@ -26,17 +26,3 @@ jobs:
         uses: saucal/reviewdog-phpcs-action@main
         with:
           linters: php,js,css
-
-      - name: Warn about fixables
-        if: ${{ steps.sniff.outputs.fixables > 0 }}
-        uses: peter-evans/create-or-update-comment@v1
-        with:
-          issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            Please run PHPCBF on your code, as there's still code that can be autofixed.
-          reaction-type: "rocket"
-
-      - name: If Fixables, no pass
-        if: ${{ steps.sniff.outputs.fixables > 0 }}
-        run: |
-          exit 1
