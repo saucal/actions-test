@@ -1,2 +1,8 @@
 <?php
-$test="asd";
+$test = 'asd';
+
+$lala = '';
+
+if ( 'lala' === $lala ) {
+	echo 'something';
+}
